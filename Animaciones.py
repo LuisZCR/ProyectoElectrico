@@ -9,8 +9,8 @@ class Biseccion(GraphScene):
     "x_min" : 0,
     "y_tick_frequency" : 5,
     "axes_color" : BLUE,
-    "x_axis_label" : "$t$",
-    "y_axis_label" : "$f(t)$",
+    "x_axis_label" : "$x$",
+    "y_axis_label" : "$f(x)$",
 }
 
     def construct(self):
@@ -81,8 +81,8 @@ class Reglaf(GraphScene):
     "x_min" : 0,
     "y_tick_frequency" : 5,
     "axes_color" : BLUE,
-    "x_axis_label" : "$t$",
-    "y_axis_label" : "$f(t)$",
+    "x_axis_label" : "$x$",
+    "y_axis_label" : "$f(x)$",
     "graph_origin" : np.array((-4.5,-1.5,0))
 }
 
@@ -109,10 +109,22 @@ class Reglaf(GraphScene):
 
         self.setup_axes()
         graph = self.get_graph(lambda x : x**2 - 20, color = GREEN)
+        valor1 = TexMobject("x_a")
+        label_coord = self.input_to_graph_point(3,graph)
+        valor1.next_to(label_coord,RIGHT+DOWN)
+        valor2 = TexMobject("x_b")
+        label_coord2 = self.input_to_graph_point(6,graph)
+        valor2.next_to(label_coord2,LEFT+UP)
+
+        punto1 = Dot(self.coords_to_point(3,-11))
+        punto2 = Dot(self.coords_to_point(6,16))
+
         self.play(
         	ShowCreation(graph),
             run_time = 2
         )
+        self.add(punto1,punto2)
+        self.play(ShowCreation(valor1) ,ShowCreation(valor2))
         self.wait()
 
     def setup_axes(self):
