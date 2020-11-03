@@ -436,7 +436,7 @@ class Reglaf(GraphScene):
             ShowCreation(self.y_axis)
         )
 
-class NewtonR(GraphScene):
+class NewtonR(GraphScene,MovingCameraScene):
 
     CONFIG = {
     "y_max" : 16,
@@ -448,6 +448,9 @@ class NewtonR(GraphScene):
     "y_axis_label" : "$f(x)$",
     "graph_origin" : np.array((-4.5,-2.5,0))
 }
+    def setup(self):
+        GraphScene.setup(self)
+        MovingCameraScene.setup(self)
 
     def construct(self):
         titulo = TextMobject("Método de Newton-Raphson")
@@ -471,21 +474,74 @@ class NewtonR(GraphScene):
         self.play(ShowCreation(graph))
         self.wait()
 
+        dot1 = Dot(self.coords_to_point(4,0))
         vert1 = self.get_vertical_line_to_graph(4,graph, color = WHITE)
-        dota1 = Dot(self.coords_to_point(4,0))
         punteada1= DashedVMobject(vert1)
 
-        self.add(dota1)
+        self.add(dot1)
         self.play(ShowCreation(punteada1))
-
-        self.wait()
 
         recta1 = self.get_graph(lambda x : 8*x -17 , color = RED)
         self.play(ShowCreation(recta1))
+
+        dot2 = Dot(self.coords_to_point(2.125,0))
+        self.add(dot2)
         self.wait()
 
-        dotb1 = Dot(self.coords_to_point(2.125,0))
-        self.add(dotb1)
+        vert2 = self.get_vertical_line_to_graph(2.125,graph, color = WHITE)
+        punteada2= DashedVMobject(vert2)
+
+        self.play(ShowCreation(punteada2))
+
+        recta2 = self.get_graph(lambda x : 4.25*x -5.515625 , color = RED)
+        self.play(ShowCreation(recta2))
+
+        enfoque = Dot(self.coords_to_point(0.85,0.5))
+        self.play(
+            self.camera_frame.scale,.35,
+            self.camera_frame.move_to,enfoque
+        )
+
+        dot3 = Dot(self.coords_to_point(1.297794118,0))
+        dot3.scale(0.45)
+        self.add(dot3)
+        self.wait()
+
+        vert3 = self.get_vertical_line_to_graph(1.297794118,graph, color = WHITE)
+        punteada3 = DashedVMobject(vert3)
+
+        self.play(ShowCreation(punteada3))
+
+        recta3 = self.get_graph(lambda x : 2.595588*x -2.684269266 , color = RED)
+        self.play(ShowCreation(recta3))
+
+
+        enfoque2 = Dot(self.coords_to_point(1.034166157,0))
+        self.play(
+            self.camera_frame.scale,.1,
+            self.camera_frame.move_to,enfoque2
+        )
+
+        dot4 = Dot(self.coords_to_point(1.034166157,0))
+        dot4.scale(0.1)
+        self.add(dot4)
+        self.wait()
+
+        vert4 = self.get_vertical_line_to_graph(1.034166157,graph , color = WHITE)
+        punteada4 = DashedVMobject(vert4)
+
+        self.play(ShowCreation(punteada4))
+
+        linea1 = self.get_graph(lambda x : 0.06989 , color = YELLOW)
+        linea2 = self.get_graph(lambda x : -0.06989 , color = YELLOW)
+
+        self.play(ShowCreation(linea1),ShowCreation(linea2))
+
+        area1 = self.get_area(linea1,0,2)
+        area2 = self.get_area(linea2,0,2)
+
+        self.play(ShowCreation(area1),ShowCreation(area2))
+
         self.wait()
 
     def setup_axes(self):
@@ -498,6 +554,120 @@ class NewtonR(GraphScene):
         step_x = 1
         #   For y
         init_label_y = 2
+        end_label_y = 16
+        step_y = 2
+        # Position of labels
+        #   For x
+        self.x_axis.label_direction = DOWN #DOWN is default
+        #   For y
+        self.y_axis.label_direction = LEFT
+        # Add labels to graph
+        #   For x
+        self.x_axis.add_numbers(*range(
+                                        init_label_x,
+                                        end_label_x+step_x,
+                                        step_x
+                                    ))
+        #   For y
+        self.y_axis.add_numbers(*range(
+                                        init_label_y,
+                                        end_label_y+step_y,
+                                        step_y
+                                    ))
+        #   Add Animation
+        self.play(
+            ShowCreation(self.x_axis),
+            ShowCreation(self.y_axis)
+        )
+
+class Secante(GraphScene,MovingCameraScene):
+
+    CONFIG = {
+    "y_max" : 16,
+    "y_min" : -4,
+    "x_max" : 5,
+    "x_min" : -2,
+    "axes_color" : BLUE,
+    "y_tick_frequency" : 2,
+    "x_axis_label" : "$x$",
+    "y_axis_label" : "$f(x)$",
+    "graph_origin" : np.array((-4.25,-2.25,0))
+}
+    def setup(self):
+        GraphScene.setup(self)
+        MovingCameraScene.setup(self)
+
+    def construct(self):
+        titulo = TextMobject("Método de la secante")
+        ecuacion = TexMobject(
+            r"x_{i+1}= x_{i}-\frac{(x_{i}-x_{i-1})f(x_{i})}{f(x_{i})-f(x_{i-1})}}"
+        )
+        ecuaesq=TexMobject(
+            r"x_{i+1}= x_{i}-\frac{(x_{i}-x_{i-1})f(x_{i})}{f(x_{i})-f(x_{i-1})}}"
+        )
+        ecuaesq.to_corner(UP+RIGHT)
+        ecuaesq.shift(RIGHT)
+        ecuaesq.scale(0.65)
+
+        self.play(Write(titulo))
+        self.wait()
+        self.play(Transform(titulo,ecuacion))
+        self.wait()
+        self.play(Transform(titulo,ecuaesq))
+
+        self.setup_axes()
+        graph = self.get_graph(lambda x : x**2 - x - 1 , color = GREEN)
+
+        self.play(ShowCreation(graph))
+        self.wait()
+
+        dot1 = Dot(self.coords_to_point(4.75,16.8125),color=RED)
+        vert1 = self.get_vertical_line_to_graph(4.75,graph, color = WHITE)
+        punteada1= DashedVMobject(vert1)
+
+        self.play(ShowCreation(punteada1))
+        self.add(dot1)
+
+        dot2 = Dot(self.coords_to_point(3.5,7.75),color=RED)
+        vert2 = self.get_vertical_line_to_graph(3.5,graph, color = WHITE)
+        punteada2= DashedVMobject(vert2)
+
+        self.play(ShowCreation(punteada2))
+        self.add(dot2)
+        self.wait()
+
+        recta1 = self.get_graph(lambda x : 7.25*x - 17.625 , color = RED)
+        dot3 = Dot(self.coords_to_point(2.431034483,0),color=RED)
+
+        self.play(ShowCreation(recta1))
+        self.add(dot3)
+        self.wait()
+
+        dot4 = Dot(self.coords_to_point(2.431034483,2.4788941),color=RED)
+        vert3 = self.get_vertical_line_to_graph(2.431034483,graph, color = WHITE)
+        punteada3= DashedVMobject(vert3)
+
+        self.play(ShowCreation(punteada3))
+        self.add(dot4)
+
+        recta2= self.get_graph(lambda x : 4.93103*x - 9.50862 , color = RED)
+        dot5= Dot(self.coords_to_point(1.92832,0), color= RED)
+
+        self.play(ShowCreation(recta2))
+        self.add(dot5)
+
+        self.wait()
+
+    def setup_axes(self):
+        # Add this line
+        GraphScene.setup_axes(self)
+        # Parametters of labels
+        #   For x
+        init_label_x = -1
+        end_label_x = 5
+        step_x = 1
+        #   For y
+        init_label_y = -4
         end_label_y = 16
         step_y = 2
         # Position of labels
