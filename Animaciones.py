@@ -646,7 +646,6 @@ class Secante(GraphScene,MovingCameraScene):
         dot4 = Dot(self.coords_to_point(2.431034483,2.4788941),color=RED)
         vert3 = self.get_vertical_line_to_graph(2.431034483,graph, color = WHITE)
         punteada3= DashedVMobject(vert3)
-
         self.play(ShowCreation(punteada3))
         self.add(dot4)
 
@@ -657,6 +656,47 @@ class Secante(GraphScene,MovingCameraScene):
         self.add(dot5)
 
         self.wait()
+
+        dot6= Dot(self.coords_to_point(1.92832,0.79), color= RED)
+        vert4 = self.get_vertical_line_to_graph(1.92832,graph, color = WHITE)
+        punteada4= DashedVMobject(vert4)
+        self.play(ShowCreation(punteada4))
+        self.add(dot6)
+
+        self.wait()
+
+        dot3.scale(0.5)
+        dot4.scale(0.5)
+        dot5.scale(0.5)
+        dot6.scale(0.5)
+
+        enfoque = Dot(self.coords_to_point(1.92,0.5))
+        self.play(
+            self.camera_frame.scale,.35,
+            self.camera_frame.move_to,enfoque
+        )
+
+        self.wait()
+
+        recta3= self.get_graph(lambda x : 3.35954*x - 5.68828 , color = RED)
+        dot7= Dot(self.coords_to_point(1.69317228,0), color= RED)
+        dot7.scale(0.5)
+
+        self.play(ShowCreation(recta3))
+        self.add(dot7)
+
+        self.wait()
+
+        dot8= Dot(self.coords_to_point(1.69317228,0.17366), color= RED)
+        vert5 = self.get_vertical_line_to_graph(1.69317228,graph, color = WHITE)
+        punteada5= DashedVMobject(vert5)
+        self.play(ShowCreation(punteada5))
+        dot8.scale(0.5)
+        self.add(dot8)
+
+        self.wait()
+
+
 
     def setup_axes(self):
         # Add this line
