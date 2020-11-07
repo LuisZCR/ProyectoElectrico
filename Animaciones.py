@@ -593,6 +593,7 @@ class Secante(GraphScene,MovingCameraScene):
     "y_axis_label" : "$f(x)$",
     "graph_origin" : np.array((-4.25,-2.25,0))
 }
+
     def setup(self):
         GraphScene.setup(self)
         MovingCameraScene.setup(self)
@@ -710,6 +711,222 @@ class Secante(GraphScene,MovingCameraScene):
         init_label_y = -4
         end_label_y = 16
         step_y = 2
+        # Position of labels
+        #   For x
+        self.x_axis.label_direction = DOWN #DOWN is default
+        #   For y
+        self.y_axis.label_direction = LEFT
+        # Add labels to graph
+        #   For x
+        self.x_axis.add_numbers(*range(
+                                        init_label_x,
+                                        end_label_x+step_x,
+                                        step_x
+                                    ))
+        #   For y
+        self.y_axis.add_numbers(*range(
+                                        init_label_y,
+                                        end_label_y+step_y,
+                                        step_y
+                                    ))
+        #   Add Animation
+        self.play(
+            ShowCreation(self.x_axis),
+            ShowCreation(self.y_axis)
+        )
+
+class Trapecio(GraphScene):
+
+    CONFIG = {
+    "y_max" : 10,
+    "y_min" : -3,
+    "x_max" : 8,
+    "x_min" : -1,
+    "axes_color" : BLUE,
+    "x_axis_label" : "$x$",
+    "y_axis_label" : "$f(x)$",
+    "graph_origin" : np.array((-5.3,-2,0))
+}
+
+    def construct(self):
+        titulo = TextMobject("Método del trapecio")
+        ecuacion = TexMobject(
+            r"I = (b-a)\frac{f(a)+f(b)}{2}"
+        )
+        ecuaesq=TexMobject(
+            r"I = (b-a)\frac{f(a)+f(b)}{2}"
+        )
+        ecuaesq.to_corner(UP+RIGHT)
+
+        self.play(Write(titulo))
+        self.wait()
+        self.play(Transform(titulo,ecuacion))
+        self.wait()
+        self.play(Transform(titulo,ecuaesq))
+
+        self.setup_axes()
+        graph = self.get_graph(lambda x : (-0.4)*x**2 + 4*x - 4 , color = GREEN,
+            x_min=0.25, x_max=8)
+
+        self.play(ShowCreation(graph))
+        self.wait()
+
+        dot1 = Dot(self.coords_to_point(2,0))
+        dot2 = Dot(self.coords_to_point(7,0))
+
+        self.add(dot1,dot2)
+
+        vert1 = self.get_vertical_line_to_graph(2,graph, color = WHITE)
+        punteada1= DashedVMobject(vert1)
+        vert2 = self.get_vertical_line_to_graph(7,graph, color = WHITE)
+        punteada2= DashedVMobject(vert2)
+
+        self.play(ShowCreation(punteada1), ShowCreation(punteada2))
+
+        dot3 = Dot(self.coords_to_point(2,2.4255419))
+        dot4 = Dot(self.coords_to_point(7,4.430524))
+
+        self.add(dot3,dot4)
+
+        self.wait()
+
+        recta1= self.get_graph(lambda x : 0.403403215*x + 1.61443462 , color = RED)
+        self.play(ShowCreation(recta1))
+
+        self.wait()
+
+        area = self.get_area(recta1,2,7)
+
+        self.add(area)
+
+        self.wait()
+
+    def setup_axes(self):
+        # Add this line
+        GraphScene.setup_axes(self)
+        # Parametters of labels
+        #   For x
+        init_label_x = -1
+        end_label_x = 8
+        step_x = 1
+        #   For y
+        init_label_y = -3
+        end_label_y = 10
+        step_y = 1
+        # Position of labels
+        #   For x
+        self.x_axis.label_direction = DOWN #DOWN is default
+        #   For y
+        self.y_axis.label_direction = LEFT
+        # Add labels to graph
+        #   For x
+        self.x_axis.add_numbers(*range(
+                                        init_label_x,
+                                        end_label_x+step_x,
+                                        step_x
+                                    ))
+        #   For y
+        self.y_axis.add_numbers(*range(
+                                        init_label_y,
+                                        end_label_y+step_y,
+                                        step_y
+                                    ))
+        #   Add Animation
+        self.play(
+            ShowCreation(self.x_axis),
+            ShowCreation(self.y_axis)
+        )
+
+class SimpsonTercio(GraphScene):
+
+    CONFIG = {
+    "y_max" : 1.5,
+    "y_min" : -0.5,
+    "x_max" : 2.5,
+    "x_min" : -2.5,
+    "axes_color" : BLUE,
+    "y_tick_frequency" : 0.5,
+    "x_tick_frequency" : 0.5,
+    "x_axis_label" : "$x$",
+    "y_axis_label" : "$f(x)$",
+    "graph_origin" : np.array((-2.4,-2,0))
+}
+
+    def construct(self):
+        titulo = TextMobject("Método de Simpson 1/3")
+        ecuacion = TexMobject(
+            r"I \cong (b-a)\frac{f(x_{0})+4f(x_1)+f(x_2)}{6}"
+        )
+        ecuaesq=TexMobject(
+            r"I \cong (b-a)\frac{f(x_{0})+4f(x_1)+f(x_2)}{6}"
+        )
+        ecuaesq.to_corner(UP+RIGHT)
+
+        self.play(Write(titulo))
+        self.wait()
+        self.play(Transform(titulo,ecuacion))
+        self.wait()
+        self.play(Transform(titulo,ecuaesq))
+
+        self.setup_axes()
+        graph = self.get_graph(lambda x : np.e**-x**2 , color = GREEN,
+            x_min=-2.5, x_max=2.5)
+
+        self.play(ShowCreation(graph))
+        self.wait()
+
+        dot1 = Dot(self.coords_to_point(-1,0.3678))
+        dot2 = Dot(self.coords_to_point(-0.5,0.7788))
+        dot3 = Dot(self.coords_to_point(0,1))
+        dot4 = Dot(self.coords_to_point(0.5,0.7788))
+        dot5 = Dot(self.coords_to_point(1,0.3678))
+
+        self.add(dot1,dot2,dot3,dot4,dot5)
+
+        self.wait()
+
+        vert1 = self.get_vertical_line_to_graph(-1,graph, color = WHITE)
+        punteada1= DashedVMobject(vert1)
+        vert2 = self.get_vertical_line_to_graph(-0.5,graph, color = WHITE)
+        punteada2= DashedVMobject(vert2)
+        vert3 = self.get_vertical_line_to_graph(0,graph, color = WHITE)
+        punteada3= DashedVMobject(vert3)
+        vert4 = self.get_vertical_line_to_graph(0.5,graph, color = WHITE)
+        punteada4= DashedVMobject(vert4)
+        vert5 = self.get_vertical_line_to_graph(1,graph, color = WHITE)
+        punteada5= DashedVMobject(vert5)
+
+        self.play(ShowCreation(punteada1),ShowCreation(punteada2),
+        ShowCreation(punteada3),ShowCreation(punteada4),ShowCreation(punteada5))
+        self.wait()
+
+        parab1 = self.get_graph(lambda x : -0.3796*x**2 + 0.2526*x + 1 , color = RED,
+            x_min=-2.5, x_max=2.5)
+
+        self.play(ShowCreation(parab1))
+
+        parab2 = self.get_graph(lambda x : -0.8848*x**2 + 1 , color = RED,
+            x_min=-2.5, x_max=2.5)
+
+        self.play(ShowCreation(parab2))
+
+        parab3 = self.get_graph(lambda x : -0.3796*x**2 - 0.2526*x + 1 , color = RED,
+            x_min=-2.5, x_max=2.5)
+
+        self.play(ShowCreation(parab3))
+
+    def setup_axes(self):
+        # Add this line
+        GraphScene.setup_axes(self)
+        # Parametters of labels
+        #   For x
+        init_label_x = -2
+        end_label_x = 2
+        step_x = 1
+        #   For y
+        init_label_y = 0
+        end_label_y = 1
+        step_y = 1
         # Position of labels
         #   For x
         self.x_axis.label_direction = DOWN #DOWN is default
