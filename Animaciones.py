@@ -1,208 +1,322 @@
+#Se importó la libreria de MANIM
 from manimlib.imports import *
 
 
+# Clase para el método de la bisección
 class Biseccion(GraphScene):
 
+    # Se realiza la configuración de la gráfica
     CONFIG = {
+    # Valor máximo de y en la gráfica
     "y_max" : 6,
+    # Valor mínimo de y en la gráfica
     "y_min" : -6,
+    # Valor máximo de x en la gráfica
     "x_max" : 6,
+    # Valor mínimo de x en la gráfica
     "x_min" : -6,
+    # Se define el color de los ejes
     "axes_color" : BLUE,
+    # Se define nombre para el eje horizontal
     "x_axis_label" : "$x$",
+    # Se define nombre para el eje vertical
     "y_axis_label" : "$f(x)$",
+    # Se define la posición en la que quiere que se genere la gráfica
     "graph_origin" : np.array((0,0,0))
 }
 
+    # Bloque de construcción de la animación
     def construct(self):
+        # Título correspondiente al método presente
         titulo = TextMobject("Método de la bisección")
+        # Ecuación correspondiente al método presente
         ecuacion = TexMobject(
             r"\frac{b+a}{2}"
         )
+        # Misma ecuación que la anterior pero que se posicionará en una esquina
         ecuaesq = TexMobject(
             r"\frac{b+a}{2}"
         )
+        # Se coloca la ecuaión en la esquina derecha superior
         ecuaesq.to_corner(UP+RIGHT)
+        # Se escribe el título
         self.play(Write(titulo))
+        # Se espera un tiempo con esta animación
         self.wait()
+        # Se transforma el título en la ecuación
         self.play(Transform(titulo,ecuacion))
+        # Se espera un tiempo con esta animación
         self.wait()
+        # Se transforma la euación en la ecuación esquinera
         self.play(Transform(titulo,ecuaesq))
 
+        # Se llama a la función que define los ejes
         self.setup_axes()
+        # Se define la gráfica que se desea mostrar y de color verde
         graph = self.get_graph(lambda x : np.cos(x) - x, color = GREEN)
+        # Se muestra la gráfica
         self.play(
         	ShowCreation(graph),
             run_time = 2
         )
+        # Se espera un tiempo con esta animación
         self.wait()
 
 
+        #Se define el nombre que se le quiere poner a este punto
         puntoa1 = TexMobject("x_{a_{1}}")
+        # Se define la coordenada en el gráfico
         label_coord = self.input_to_graph_point(-3,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntoa1.next_to(label_coord,RIGHT+DOWN)
+        # Se define el nombre que se le quiere poner a este punto
         puntob1 = TexMobject("x_{b_{1}}")
+        # Se define la coordenada en el gráfico
         label_coord2 = self.input_to_graph_point(3,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntob1.next_to(label_coord2,RIGHT+UP)
 
+        # Se definen las coordenadas para el punto
         dota1 = Dot(self.coords_to_point(-3,2.01))
+        # Se definen las coordenadas para el punto
         dotb1 = Dot(self.coords_to_point(3,-3.989992))
 
+        # Se añaden los puntos
         self.add(dota1,dotb1)
+        # Se añaden los nombres que se le dieron a los puntos
         self.play(ShowCreation(puntoa1) ,ShowCreation(puntob1))
 
+        # Se define la ecuación que se realiza en ese instante
         res1 = TexMobject(
             r"\frac{3+(-3)}{2}=0"
         )
+        # Se le da de ubicación de la esquina derecha superior a la ecuación
         res1.to_corner(UP+RIGHT)
+        # Se transforma la ecuación anterior en la deseada
         self.play(Transform(titulo,res1))
 
+        # Se espera un tiempo con esta animación
         self.wait()
 
+        # Se define el nombre que se le quiere poner a este punto
         puntoa2 = TexMobject("x_{a_{2}}")
+        # Se define la coordenada en el gráfico
         label_coord = self.input_to_graph_point(0,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntoa2.next_to(label_coord,RIGHT+UP)
+        # Se define el nombre que se le quiere poner a este punto
         puntob2 = TexMobject("x_{b_{2}}")
+        # Se define la coordenada en el gráfico
         label_coord2 = self.input_to_graph_point(3,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntob2.next_to(label_coord2,RIGHT+UP)
 
+        # Se definen las coordenadas para el punto
         dota2 = Dot(self.coords_to_point(0,1))
+        # Se definen las coordenadas para el punto
         dotb2 = Dot(self.coords_to_point(3,-3.989992))
 
+        # Se remueven los puntos
         self.remove(dota1,dotb1)
+        # Se añaden los puntos
         self.add(dota2,dotb2)
+        # Se cambia el nombre de los puntos anteriores por los que corresponden
         self.play(Transform(puntoa1,puntoa2), Transform(puntob1,puntob2))
 
+        # Se define la ecuación que se realiza en ese instante
         res2 = TexMobject(
             r"\frac{3+0}{2}=1.5"
         )
+        # Se le da de ubicación de la esquina derecha superior a la ecuación
         res2.to_corner(UP+RIGHT)
+        # Se transforma la ecuación anterior en la deseada
         self.play(Transform(titulo,res2))
 
+        # Se espera un tiempo con esta animación
         self.wait()
 
+        # Se define el nombre que se le quiere poner a este punto
         puntoa3 = TexMobject("x_{a_{3}}")
+        # Se define la coordenada en el gráfico
         label_coord = self.input_to_graph_point(0,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntoa3.next_to(label_coord,RIGHT+UP)
+        # Se define el nombre que se le quiere poner a este punto
         puntob3 = TexMobject("x_{b_{3}}")
+        # Se define la coordenada en el gráfico
         label_coord2 = self.input_to_graph_point(1.5,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntob3.next_to(label_coord2,RIGHT+DOWN)
 
+        # Se definen las coordenadas para el punto
         dota3 = Dot(self.coords_to_point(0,1))
+        # Se definen las coordenadas para el punto
         dotb3 = Dot(self.coords_to_point(1.5,-1.429262))
 
+        # Se remueven los puntos
         self.remove(dota2,dotb2)
+        # Se añaden los puntos
         self.add(dota3,dotb3)
+        # Se cambia el nombre de los puntos anteriores por los que corresponden
         self.play(Transform(puntoa1,puntoa3), Transform(puntob1,puntob3))
 
+        # Se define la ecuación que se realiza en ese instante
         res3 = TexMobject(
             r"\frac{1.5+0}{2}=0.75"
         )
+        # Se le da de ubicación de la esquina derecha superior a la ecuación
         res3.to_corner(UP+RIGHT)
+        # Se transforma la ecuación anterior en la deseada
         self.play(Transform(titulo,res3))
 
+        # Se espera un tiempo con esta animación
         self.wait()
 
+        # Se define el nombre que se le quiere poner a este punto
         puntoa4 = TexMobject("x_{a_{4}}")
+        # Se define la coordenada en el gráfico
         label_coord = self.input_to_graph_point(0,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntoa4.next_to(label_coord,RIGHT+UP)
+        # Se define el nombre que se le quiere poner a este punto
         puntob4 = TexMobject("x_{b_{4}}")
+        # Se define la coordenada en el gráfico
         label_coord2 = self.input_to_graph_point(0.75,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntob4.next_to(label_coord2,RIGHT+UP)
 
+        # Se definen las coordenadas para el punto
         dota4 = Dot(self.coords_to_point(0,1))
+        # Se definen las coordenadas para el punto
         dotb4 = Dot(self.coords_to_point(0.75,-0.0183111))
 
         self.remove(dota3,dotb3)
+        # Se añaden los puntos
         self.add(dota4,dotb4)
+        # Se cambia el nombre de los puntos anteriores por los que corresponden
         self.play(Transform(puntoa1,puntoa4), Transform(puntob1,puntob4))
 
+        # Se define la ecuación que se realiza en ese instante
         res4 = TexMobject(
             r"\frac{0.75+0}{2}=0.375"
         )
+        # Se le da de ubicación de la esquina derecha superior a la ecuación
         res4.to_corner(UP+RIGHT)
+        # Se transforma la ecuación anterior en la deseada
         self.play(Transform(titulo,res4))
 
+        # Se espera un tiempo con esta animación
         self.wait()
 
+        # Se define el nombre que se le quiere poner a este punto
         puntoa5 = TexMobject("x_{a_{5}}")
+        # Se define la coordenada en el gráfico
         label_coord = self.input_to_graph_point(0.375,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntoa5.next_to(label_coord,RIGHT+UP)
+        # Se define el nombre que se le quiere poner a este punto
         puntob5 = TexMobject("x_{b_{5}}")
+        # Se define la coordenada en el gráfico
         label_coord2 = self.input_to_graph_point(0.75,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntob5.next_to(label_coord2,RIGHT+UP)
 
+        # Se definen las coordenadas para el punto
         dota5 = Dot(self.coords_to_point(0.375,0.5555076))
+        # Se definen las coordenadas para el punto
         dotb5 = Dot(self.coords_to_point(0.75,-0.0183111))
 
+        # Se remueven los puntos
         self.remove(dota4,dotb4)
+        # Se añaden los puntos
         self.add(dota5,dotb5)
+        # Se cambia el nombre de los puntos anteriores por los que corresponden
         self.play(Transform(puntoa1,puntoa5), Transform(puntob1,puntob5))
 
+        # Se define la ecuación que se realiza en ese instante
         res5 = TexMobject(
             r"\frac{0.375+0.75}{2}=0.5625"
         )
+        # Se le da de ubicación de la esquina derecha superior a la ecuación
         res5.to_corner(UP+RIGHT)
+        # Se transforma la ecuación anterior en la deseada
         self.play(Transform(titulo,res5))
 
+        # Se espera un tiempo con esta animación
         self.wait(3)
 
+        # Se define el nombre que se le quiere poner a este punto
         puntoan = TexMobject("x_{a_{n}}")
+        # Se define la coordenada en el gráfico
         label_coord = self.input_to_graph_point(0.739,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntoan.next_to(label_coord,RIGHT+UP)
+        # Se le asigna un tamaño menor al punto
         puntoan.scale(0.75)
+        # Se define el nombre que se le quiere poner a este punto
         puntobn = TexMobject("x_{b_{n}}")
+        # Se define la coordenada en el gráfico
         label_coord2 = self.input_to_graph_point(0.739,graph)
+        # Se indica la coordnada donde debe colocarse el nombre
         puntobn.next_to(label_coord2,RIGHT+DOWN)
+        # Se le asigna un tamaño menor al punto
         puntobn.scale(0.75)
-
+        # Se definfe las coordenadas para el punto y se le define color amarillo
         dotan = Dot(self.coords_to_point(0.739,0.000142477), color=YELLOW)
 
-
+        # Se remueven los puntos
         self.remove(dota5,dotb5)
+        # Se añaden el punto
         self.add(dotan)
+        # Se cambia el nombre de los puntos anteriores por los que corresponden
         self.play(Transform(puntoa1,puntoan), Transform(puntob1,puntobn))
 
-        res5 = TexMobject(
+        # Se define la ecuación que se realiza en ese instante
+        resn = TexMobject(
             r"\frac{0.739+0.739}{2}=0.739 ; n=19"
         )
-        res5.scale(0.75)
-        res5.to_corner(UP+RIGHT)
-        self.play(Transform(titulo,res5))
+        # Se le asigna un tamaño menor a la ecuación
+        resn.scale(0.75)
+        # Se coloca la ecuación en la esquina derecha superior
+        resn.to_corner(UP+RIGHT)
+        # Se transforma la ecuación anterior en la deseada
+        self.play(Transform(titulo,resn))
 
+        # Se espera un tiempo con esta animación
         self.wait()
 
+    # Función en la que se definen los ejes
     def setup_axes(self):
-        # Add this line
+        # Agregar estos ejes a la gráfica
         GraphScene.setup_axes(self)
-        # Parametters of labels
-        #   For x
+        # Parametros para las etiquetas
+        #   Para x
         init_label_x = -6
         end_label_x = 6
         step_x = 1
-        #   For y
+        #   Para y
         init_label_y = 6
         end_label_y = -6
         step_y = 1
-        # Position of labels
-        #   For x
+        # Posiciones para las etiquetas
+        #   Para x
         self.x_axis.label_direction = DOWN #DOWN is default
-        #   For y
+        #   Para y
         self.y_axis.label_direction = LEFT
-        # Add labels to graph
-        #   For x
+        # Agregar etiquetas a la gráfica
+        #   Para x
         self.x_axis.add_numbers(*range(
                                         init_label_x,
                                         end_label_x+step_x,
                                         step_x
                                     ))
-        #   For y
+        #   Para y
         self.y_axis.add_numbers(*range(
                                         init_label_y,
                                         end_label_y+step_y,
                                         step_y
                                     ))
-        #   Add Animation
+        #   Se agrega la animación
         self.play(
             ShowCreation(self.x_axis),
             ShowCreation(self.y_axis)
