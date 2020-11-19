@@ -1258,6 +1258,150 @@ class SimpsonTercio(GraphScene):
 
         # Se definieron los puntos
         dot1 = Dot(self.coords_to_point(-1,0.3678))
+        dot2 = Dot(self.coords_to_point(-0.25,0.9394))
+        dot3 = Dot(self.coords_to_point(0.5,0.7788))
+
+        # Se agregaron los puntos
+        self.add(dot1,dot2,dot3)
+
+        # Se espera un tiempo con esta animación
+        self.wait()
+
+        # Se definen líneas punteadas para los puntos
+        vert1 = self.get_vertical_line_to_graph(-1,graph, color = WHITE)
+        punteada1= DashedVMobject(vert1)
+        vert2 = self.get_vertical_line_to_graph(-0.25,graph, color = WHITE)
+        punteada2= DashedVMobject(vert2)
+        vert3 = self.get_vertical_line_to_graph(0.5,graph, color = WHITE)
+        punteada3= DashedVMobject(vert3)
+
+        # Se muestran las líneas punteadas
+        self.play(ShowCreation(punteada1),ShowCreation(punteada2),
+        ShowCreation(punteada3))
+        # Se espera un tiempo con esta animación
+        self.wait()
+
+        # Se define la parábola
+        parab = self.get_graph(lambda x : -0.651*x**2 - 0.051*x + 0.967 , color = RED,
+            x_min=-2.5, x_max=2.5)
+
+        # Se muestra la parábola
+        self.play(ShowCreation(parab))
+
+        # Se espera un tiempo con esta animación
+        self.wait(2)
+        
+        # Se define un área
+        area = self.get_area(parab,-1,0.5)
+        # Se agrega el área
+        self.add(area)
+
+        # Se espera un tiempo con esta animación
+        self.wait(2)
+
+
+    # Función en la que se definen los ejes
+    def setup_axes(self):
+        # Agregar estos ejes a la gráfica
+        GraphScene.setup_axes(self)
+        # Parametros para las etiquetas
+        #   Para x
+        init_label_x = -2
+        end_label_x = 2
+        step_x = 1
+        #   Para y
+        init_label_y = 0
+        end_label_y = 1
+        step_y = 1
+        # Posiciones para las etiquetas
+        #   Para x
+        self.x_axis.label_direction = DOWN #DOWN is default
+        #   Para y
+        self.y_axis.label_direction = LEFT
+        # Agregar etiquetas a la gráfica
+        #   Para x
+        self.x_axis.add_numbers(*range(
+                                        init_label_x,
+                                        end_label_x+step_x,
+                                        step_x
+                                    ))
+        #   Para y
+        self.y_axis.add_numbers(*range(
+                                        init_label_y,
+                                        end_label_y+step_y,
+                                        step_y
+                                    ))
+        #   Se agrega la animación
+        self.play(
+            ShowCreation(self.x_axis),
+            ShowCreation(self.y_axis)
+        )
+
+# Clase para el método de Simson Tercio
+class SimpsonTresOcho(GraphScene):
+
+    # Se realiza la configuración de la gráfica
+    CONFIG = {
+    # Valor máximo de y en la gráfica
+    "y_max" : 1.5,
+    # Valor mínimo de y en la gráfica
+    "y_min" : -0.5,
+    # Valor máximo de x en la gráfica
+    "x_max" : 2.5,
+    # Valor mínimo de x en la gráfica
+    "x_min" : -2.5,
+    # Se define el color de los ejes
+    "axes_color" : BLUE,
+    # Se define la frecuecia de las líneas en el eje vertical
+    "y_tick_frequency" : 0.5,
+    # Se define la frecuecia de las líneas en el eje horizontal
+    "x_tick_frequency" : 0.5,
+    # Se define nombre para el eje horizontal
+    "x_axis_label" : "$x$",
+    # Se define nombre para el eje vertical
+    "y_axis_label" : "$f(x)$",
+    # Se define la posición en la que quiere que se genere la gráfica
+    "graph_origin" : np.array((-2.4,-2,0))
+}
+
+    # Bloque de construcción de la animación
+    def construct(self):
+        # Título correspondiente al método presente
+        titulo = TextMobject("Método de Simpson 3/8")
+        # Ecuación correspondiente al método presente
+        ecuacion = TexMobject(
+            r"I \cong (b-a)\frac{f(x_{0})+3f(x_1)+3f(x_2)+f(x_3)}{8}"
+        )
+        # Misma ecuación que la anterior pero que se posicionará en una esquina
+        ecuaesq=TexMobject(
+            r"I \cong (b-a)\frac{f(x_{0})+3f(x_1)+3f(x_2)+f(x_3)}{8}"
+        )
+        # Se coloca la ecuaión en la esquina derecha superior
+        ecuaesq.to_corner(UP+RIGHT)
+
+        # Se escribe el título
+        self.play(Write(titulo))
+        # Se espera un tiempo con esta animación
+        self.wait()
+        # Se transforma el título en la ecuación
+        self.play(Transform(titulo,ecuacion))
+        # Se espera un tiempo con esta animación
+        self.wait()
+        # Se transforma la euación en la ecuación esquinera
+        self.play(Transform(titulo,ecuaesq))
+
+        # Se llama a la función que define los ejes
+        self.setup_axes()
+        # Se define la gráfica que se desea mostrar y de color verde
+        graph = self.get_graph(lambda x : np.e**-x**2 , color = GREEN,
+            x_min=-2.5, x_max=2.5)
+        # Se muestra la gráfica
+        self.play(ShowCreation(graph))
+        # Se espera un tiempo con esta animación
+        self.wait()
+
+        # Se definieron los puntos
+        dot1 = Dot(self.coords_to_point(-1,0.3678))
         dot2 = Dot(self.coords_to_point(-0.5,0.7788))
         dot3 = Dot(self.coords_to_point(0,1))
         dot4 = Dot(self.coords_to_point(0.5,0.7788))
@@ -1294,6 +1438,14 @@ class SimpsonTercio(GraphScene):
         # Se muestra la parábola
         self.play(ShowCreation(parab1))
 
+        # Se define un área
+        area1 = self.get_area(parab1,-1,0)
+        # Se agrega el área
+        self.add(area1)
+
+        # Se espera un tiempo con esta animación
+        self.wait()
+
         # Se define la parábola
         parab2 = self.get_graph(lambda x : -0.8848*x**2 + 1 , color = RED,
             x_min=-2.5, x_max=2.5)
@@ -1301,12 +1453,28 @@ class SimpsonTercio(GraphScene):
         # Se muestra la parábola
         self.play(ShowCreation(parab2))
 
+        # Se define un área
+        area2 = self.get_area(parab2,-0.5 ,0.5)
+        # Se agrega el área
+        self.add(area2)
+
+        # Se espera un tiempo con esta animación
+        self.wait()
+
         # Se define la parábola
         parab3 = self.get_graph(lambda x : -0.3796*x**2 - 0.2526*x + 1 , color = RED,
             x_min=-2.5, x_max=2.5)
 
         # Se muestra la parábola
         self.play(ShowCreation(parab3))
+
+        # Se define un área
+        area3 = self.get_area(parab3,0 ,1)
+        # Se agrega el área
+        self.add(area3)
+
+        # Se espera un tiempo con esta animación
+        self.wait()
 
     # Función en la que se definen los ejes
     def setup_axes(self):
