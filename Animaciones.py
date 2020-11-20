@@ -697,6 +697,9 @@ class NewtonR(GraphScene,MovingCameraScene):
         # Se espera un tiempo con esta animación
         self.wait()
 
+        #Se guarda el estado de la cámara
+        self.camera_frame.save_state()
+
         # Se define un punto y una línea punteada a él
         dot1 = Dot(self.coords_to_point(4,0))
         vert1 = self.get_vertical_line_to_graph(4,graph, color = WHITE)
@@ -798,6 +801,29 @@ class NewtonR(GraphScene,MovingCameraScene):
 
         # Se muestran las áreas definidas
         self.play(ShowCreation(area1),ShowCreation(area2))
+
+        # Se espera un tiempo con esta animación
+        self.wait()
+
+        # Se reestablece la cámara inicial
+        self.play(Restore(self.camera_frame))
+
+        # Se espera un tiempo con esta animación
+        self.wait()
+
+        # Se define una ayuda y se ubica en la posición deseada
+        ayuda = TextMobject("Se nota una muy pequeña diferencia")
+        ayuda.to_corner(DOWN+RIGHT)
+
+        #Se transforma la ecuación esquinera en la ayuda
+        self.play(Transform(titulo,ayuda))
+
+        # Se agrega un comentario y se ubica en la posición deseada
+        comentario = TextMobject("Buena aproximación")
+        comentario.to_corner(UP+RIGHT)
+
+        #Se muestra el resultado
+        self.play(Write(comentario))
 
         # Se espera un tiempo con esta animación
         self.wait()
@@ -1193,7 +1219,7 @@ class Trapecio(GraphScene):
             ShowCreation(self.y_axis)
         )
 
-# Clase para el método de Simson Tercio
+# Clase para el método de Simpson Tercio
 class SimpsonTercio(GraphScene):
 
     # Se realiza la configuración de la gráfica
@@ -1290,7 +1316,7 @@ class SimpsonTercio(GraphScene):
 
         # Se espera un tiempo con esta animación
         self.wait(2)
-        
+
         # Se define un área
         area = self.get_area(parab,-1,0.5)
         # Se agrega el área
@@ -1337,7 +1363,7 @@ class SimpsonTercio(GraphScene):
             ShowCreation(self.y_axis)
         )
 
-# Clase para el método de Simson Tercio
+# Clase para el método de Simpson Tres Octavos
 class SimpsonTresOcho(GraphScene):
 
     # Se realiza la configuración de la gráfica
@@ -1378,6 +1404,11 @@ class SimpsonTresOcho(GraphScene):
         )
         # Se coloca la ecuaión en la esquina derecha superior
         ecuaesq.to_corner(UP+RIGHT)
+        # Se mueve hacia la derecha
+        ecuaesq.shift(RIGHT)
+        # Se ajusta el tamaño de la ecuación
+        ecuaesq.scale(0.75)
+
 
         # Se escribe el título
         self.play(Write(titulo))
